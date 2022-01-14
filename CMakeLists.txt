@@ -137,6 +137,13 @@ elseif (NOT Flatbuffers_FOUND AND NOT TARGET flatbuffers::flatbuffers)
 endif ()
 add_subdirectory(fbs)
 
+if (NOT EXISTS "${PROJECT_SOURCE_DIR}/extern/sse2neon")
+    find_package(Git REQUIRED)
+    message("initialize Git submodule: extern/sse2neon")
+    execute_process(COMMAND git submodule update --init extern/sse2neon
+            WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}")
+endif ()
+
 add_subdirectory(src/motioncore)
 
 if (MOTION_BUILD_TESTS)
