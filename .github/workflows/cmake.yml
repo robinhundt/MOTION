@@ -33,14 +33,7 @@ jobs:
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a
       # single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
-      run: > 
-        cmake -B ${{github.workspace}}/build \
-          -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \ 
-          -DMOTION_BUILD_TESTS=On \
-          -DMOTION_STATIC_OPENSSL=On \
-          -DBUILD_OPENSSL=ON \
-          -DOPENSSL_BUILD_VERSION=${{env.OPENSSL_BUILD_VERSION}} \
-          -DOPENSSL_BUILD_HASH=${{env.OPENSSL_BUILD_HASH}}
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DMOTION_BUILD_TESTS=On -DMOTION_STATIC_OPENSSL=On -DBUILD_OPENSSL=ON -DOPENSSL_BUILD_VERSION=${{env.OPENSSL_BUILD_VERSION}} -DOPENSSL_BUILD_HASH=${{env.OPENSSL_BUILD_HASH}}
       env:
         CC: gcc-10
         CXX: g++-10
