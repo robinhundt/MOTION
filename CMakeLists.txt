@@ -21,6 +21,12 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 find_package(Threads REQUIRED)
 
 if(MOTION_STATIC_OPENSSL)
+    if (NOT EXISTS "${PROJECT_SOURCE_DIR}/extern/openssl-cmake")
+        find_package(Git REQUIRED)
+        message("initialize Git submodule: extern/openssl-cmake")
+        execute_process(COMMAND git submodule update --init extern/openssl-cmake
+                WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}")
+    endif ()
     add_subdirectory(extern/openssl-cmake)
     add_library(OpenSSL::SSL ALIAS ssl_lib)
     add_library(OpenSSL::Crypto ALIAS crypto_lib)
