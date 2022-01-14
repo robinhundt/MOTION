@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Debug
+  BUILD_TYPE: Release
 
 jobs:
   build:
@@ -19,13 +19,13 @@ jobs:
     - name: Cache build artifacts
       uses: actions/cache@v2
       env:
-        cache-name: cache-build-dir
+        cache-name: build-dir
       with:
         path: ${{github.workspace}}/build
-        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.ref_name }}
+        key: ${{ runner.os }}-cache-${{ env.cache-name }}-${{ github.ref_name }}
         restore-keys: |
-          ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.ref_name }}
-          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-cache-${{ env.cache-name }}-${{ github.ref_name }}
+          ${{ runner.os }}-cache-${{ env.cache-name }}
 
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a
