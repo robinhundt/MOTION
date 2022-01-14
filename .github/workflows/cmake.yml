@@ -6,7 +6,7 @@ env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
   OPENSSL_BUILD_VERSION: 1.1.1m
-  DOPENSSL_BUILD_HASH: f89199be8b23ca45fc7cb9f1d8d3ee67312318286ad030f5316aca6462db6c96
+  OPENSSL_BUILD_HASH: f89199be8b23ca45fc7cb9f1d8d3ee67312318286ad030f5316aca6462db6c96
 
 jobs:
   build:
@@ -37,9 +37,10 @@ jobs:
         cmake -B ${{github.workspace}}/build \
           -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} \ 
           -DMOTION_BUILD_TESTS=On \
+          -DMOTION_STATIC_OPENSSL=On \
           -DBUILD_OPENSSL=ON \
           -DOPENSSL_BUILD_VERSION=${{env.OPENSSL_BUILD_VERSION}} \
-          -DDOPENSSL_BUILD_HASH=${{env.DOPENSSL_BUILD_HASH}}
+          -DOPENSSL_BUILD_HASH=${{env.OPENSSL_BUILD_HASH}}
       env:
         CC: gcc-10
         CXX: g++-10
