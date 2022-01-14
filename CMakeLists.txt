@@ -21,7 +21,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 find_package(Threads REQUIRED)
 
 if(MOTION_STATIC_OPENSSL)
-    if (NOT EXISTS "${PROJECT_SOURCE_DIR}/extern/openssl-cmake")
+    if (NOT EXISTS "${PROJECT_SOURCE_DIR}/extern/openssl-cmake/CMakeLists.txt")
         find_package(Git REQUIRED)
         message("initialize Git submodule: extern/openssl-cmake")
         execute_process(COMMAND git submodule update --init extern/openssl-cmake
