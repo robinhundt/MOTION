@@ -5,20 +5,29 @@ set(MOTION_VERSION 0.01)
 
 string(REPLACE "-DNDEBUG" "" CMAKE_CXX_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
 
-if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.0)
-    message(FATAL_ERROR "MOTION requires at least g++-8")
+if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 10.0)
+    message(FATAL_ERROR "MOTION requires at least g++-10")
 endif ()
 
 option(MOTION_BUILD_EXE "Build executables" OFF)
 option(MOTION_BUILD_TESTS "Build tests" OFF)
 option(MOTION_BUILD_DOC "Build documentation" OFF)
 option(MOTION_LINK_TCMALLOC "Link against tcmalloc" OFF)
+option(STATIC_OPENSSL "Statically link OpenSSL" OFF)
 set(MOTION_USE_AVX OFF CACHE STRING "Use AVX/AVX2/AVX512/AVX512VAES instructions")
 set_property(CACHE MOTION_USE_AVX PROPERTY STRINGS OFF AVX AVX2 AVX512 AVX512VAES)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 find_package(Threads REQUIRED)
-find_package(OpenSSL REQUIRED)
+
+if(STATIC_OPENSSL)
+    add_subdirectory(extern/openssl-cmake)
+    add_library(OpenSSL::SSL ALIAS ssl_lib)
+    add_library(OpenSSL::Crypto ALIAS crypto_lib)
+else()
+    find_package(OpenSSL REQUIRED)
+endif()
+
 find_package(OpenMP REQUIRED)
 
 # At least boost 1.75.0 is needed to use Boost::json.
