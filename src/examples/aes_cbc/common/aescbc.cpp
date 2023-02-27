@@ -57,10 +57,10 @@ encrypto::motion::RunTimeStatistics EvaluateProtocol(encrypto::motion::PartyPoin
                                                      std::size_t data_bytes,
                                                      bool check) {
   // TODO tests
-  assert(data_bytes % 128 == 0);
+  assert(data_bytes % 16 == 0);
   std::vector<encrypto::motion::BitVector<>> tmp_key(128, encrypto::motion::BitVector<>(1));
   std::vector<encrypto::motion::BitVector<>> tmp_iv(128, encrypto::motion::BitVector<>(1));
-  std::vector<encrypto::motion::BitVector<>> tmp_data(data_bytes, encrypto::motion::BitVector<>(1));
+  std::vector<encrypto::motion::BitVector<>> tmp_data(data_bytes * 8, encrypto::motion::BitVector<>(1));
   encrypto::motion::ShareWrapper key_input{party->In<encrypto::motion::MpcProtocol::kBooleanGmw>(tmp_key, 0)};
   encrypto::motion::ShareWrapper chaining_state{party->In<encrypto::motion::MpcProtocol::kBooleanGmw>(tmp_iv, 0)};
   const auto kPathToAlgorithm{std::string(encrypto::motion::kRootDir) +
