@@ -2,6 +2,7 @@
 
 id=$1
 
+make aescbc -j 30
 
 for in_blocks in {1,2,8,16,32,};do
   if [[ $id == 0 ]];then
