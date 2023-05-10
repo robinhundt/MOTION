@@ -72,9 +72,11 @@ int main(int ac, char* av[]) {
       accumulated_communication_statistics.Add(communication_statistics);
     }
 
-    std::cout << encrypto::motion::PrintStatistics(
-        fmt::format("AES128 with {} data bytes", data_bytes),
-        accumulated_statistics, accumulated_communication_statistics);
+//    std::cout << encrypto::motion::PrintStatistics(
+//        fmt::format("AES128 with {} data bytes", data_bytes),
+//        accumulated_statistics, accumulated_communication_statistics);
+    std::cout << accumulated_statistics.ToJson() << std::endl;
+    std::cout << accumulated_communication_statistics.ToJson() << std::endl;
 
   } catch (std::runtime_error& e) {
     std::cerr << e.what() << "\n";

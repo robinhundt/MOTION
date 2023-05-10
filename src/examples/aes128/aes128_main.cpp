@@ -80,9 +80,11 @@ int main(int ac, char* av[]) {
       accumulated_communication_statistics.Add(communication_statistics);
     }
 
-    std::cout << encrypto::motion::PrintStatistics(
-        fmt::format("AES128 with {} SIMD values in {}", number_of_simd, protocol_string),
-        accumulated_statistics, accumulated_communication_statistics);
+//    std::cout << encrypto::motion::PrintStatistics(
+//        fmt::format("AES128 with {} SIMD values in {}", number_of_simd, protocol_string),
+//        accumulated_statistics, accumulated_communication_statistics);
+    std::cout << accumulated_statistics.ToJson() << std::endl;
+    std::cout << accumulated_communication_statistics.ToJson() << std::endl;
 
   } catch (std::runtime_error& e) {
     std::cerr << e.what() << "\n";
@@ -125,7 +127,7 @@ std::pair<program_options::variables_map, bool> ParseProgramOptions(int ac, char
       ("my-id", program_options::value<std::size_t>(), "my party id")
       ("parties", program_options::value<std::vector<std::string>>()->multitoken(), "info (id,IP,port) for each party e.g., --parties 0,127.0.0.1,23000 1,127.0.0.1,23001")
       ("num-simd", program_options::value<std::size_t>()->default_value(1), "number of SIMD values for AES evaluation")
-      ("protocol", program_options::value<std::string>()->default_value("BMR"), "Boolean MPC protocol (BMR or GMW)")
+      ("protocol", program_options::value<std::string>()->default_value("GMW"), "Boolean MPC protocol (BMR or GMW)")
       ("online-after-setup", program_options::value<bool>()->default_value(true), "compute the online phase of the gate evaluations after the setup phase for all of them is completed (true/1 or false/0)")
       ("repetitions", program_options::value<std::size_t>()->default_value(1), "number of repetitions")
       ("check", program_options::value<bool>()->default_value(false), "check the computed values for correctness (true/1 or false/0)");
