@@ -130,7 +130,8 @@ std::pair<program_options::variables_map, bool> ParseProgramOptions(int ac, char
       ("protocol", program_options::value<std::string>()->default_value("GMW"), "Boolean MPC protocol (BMR or GMW)")
       ("online-after-setup", program_options::value<bool>()->default_value(true), "compute the online phase of the gate evaluations after the setup phase for all of them is completed (true/1 or false/0)")
       ("repetitions", program_options::value<std::size_t>()->default_value(1), "number of repetitions")
-      ("check", program_options::value<bool>()->default_value(false), "check the computed values for correctness (true/1 or false/0)");
+      ("check", program_options::value<bool>()->default_value(false), "check the computed values for correctness (true/1 or false/0)")
+      ("insecure-setup", program_options::bool_switch(), "Use insecure MTs");
   // clang-format on
 
   program_options::variables_map user_options;
@@ -208,6 +209,9 @@ encrypto::motion::PartyPointer CreateParty(const program_options::variables_map&
   auto communication_layer = std::make_unique<encrypto::motion::communication::CommunicationLayer>(
       my_id, helper.SetupConnections());
   auto party = std::make_unique<encrypto::motion::Party>(std::move(communication_layer));
+  if (user_options["insecure-setup"].as<bool>()) {
+    party->GetBackend()->SetMtProvider(std::make_shared<encrypto::motion::InsecureMtProvider>(0, 2));
+  }
   auto configuration = party->GetConfiguration();
   // disable logging if the corresponding flag was set
   const auto logging{!user_options.count("disable-logging")};

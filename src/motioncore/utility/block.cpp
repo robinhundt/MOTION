@@ -24,6 +24,7 @@
 #include <algorithm>
 #include <boost/algorithm/hex.hpp>
 #include <cassert>
+#include <cstdint>
 #include "primitives/random/default_rng.h"
 
 

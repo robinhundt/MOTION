@@ -311,4 +311,27 @@ void MtProviderFromOts::ParseOutputs() {
   }
 }
 
+InsecureMtProvider::InsecureMtProvider(
+    const std::size_t my_id,
+    const std::size_t num_parties): MtProvider(my_id, num_parties) {}
+
+void InsecureMtProvider::PreSetup() {}
+
+void InsecureMtProvider::Setup() {
+    if(!NeedMts()) {
+      return;
+    }
+    bit_mts_ = BinaryMtVector(number_of_bit_mts_);
+    mts8_ = IntegerMtVector<std::uint8_t>(number_of_mts_8_);
+    mts16_ = IntegerMtVector<std::uint16_t>(number_of_mts_16_);
+    mts32_ = IntegerMtVector<std::uint32_t>(number_of_mts_32_);
+    mts64_ = IntegerMtVector<std::uint64_t>(number_of_mts_64_);
+
+    {
+      std::scoped_lock lock(finished_condition_->GetMutex());
+      finished_ = true;
+    }
+
+    finished_condition_->NotifyAll();
+}
 }  // namespace encrypto::motion

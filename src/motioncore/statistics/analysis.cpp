@@ -104,10 +104,14 @@ std::string AccumulatedRunTimeStatistics::PrintHumanReadable() const {
 boost::json::object AccumulatedRunTimeStatistics::ToJson() const {
   const auto make_triple = [this](const auto& stat_id) {
     const auto& acc = At(accumulators_, stat_id);
+    double stddev = std::sqrt(boost::accumulators::variance(acc));
+    if (std::isnan(stddev)) {
+      stddev = 0.0;
+    }
     return boost::json::object({{"mean", boost::accumulators::mean(acc)},
                                 {"median", boost::accumulators::median(acc)},
                                 // uncorrected standard deviation
-                                {"stddev", std::sqrt(boost::accumulators::variance(acc))}});
+                                {"stddev", stddev}});
   };
   return {{"repetitions", count_},
           {"mt_presetup", make_triple(StatId::kMtPresetup)},

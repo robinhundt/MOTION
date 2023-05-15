@@ -89,6 +89,7 @@ Backend::Backend(std::unique_ptr<communication::CommunicationLayer> communicatio
 
   mt_provider_ = std::make_shared<MtProviderFromOts>(ot_provider_manager_->GetProviders(), my_id,
                                                      logger, run_time_statistics_.back());
+//  mt_provider_ = std::make_shared<InsecureMtProvider>(my_id, communication_layer_->GetNumberOfParties());
   sp_provider_ = std::make_shared<SpProviderFromOts>(ot_provider_manager_->GetProviders(), my_id,
                                                      logger, run_time_statistics_.back());
   sb_provider_ = std::make_shared<SbProviderFromSps>(*communication_layer_, sp_provider_, logger,

@@ -38,10 +38,16 @@ class Logger;
 
 template <typename T, typename = std::enable_if_t<std::is_unsigned_v<T>>>
 struct IntegerMtVector {
+  IntegerMtVector() = default;
+  explicit IntegerMtVector(std::size_t size): a(size, 0), b(size, 0), c(size, 0) {}
   std::vector<T> a, b, c;  // c[i] = a[i] * b[i]
+
 };
 
 struct BinaryMtVector {
+  BinaryMtVector() = default;
+  BinaryMtVector(BitVector<> a, BitVector<> b, BitVector<> c): a(a), b(b), c(c) {}
+  explicit BinaryMtVector(std::size_t size): a(size), b(size), c(size) {}
   BitVector<> a, b, c;  // c[i] = a[i] ^ b[i]
 };
 
@@ -207,6 +213,15 @@ class MtProviderFromOts final : public MtProvider {
 
   std::shared_ptr<Logger> logger_;
   RunTimeStatistics& run_time_statistics_;
+};
+
+class InsecureMtProvider final: public MtProvider {
+ public:
+  InsecureMtProvider(std::size_t my_id, std::size_t num_parties);
+  ~InsecureMtProvider() override = default;
+
+  void PreSetup() final;
+  void Setup() final;
 };
 
 }  // namespace encrypto::motion

@@ -244,6 +244,11 @@ class Backend : public std::enable_shared_from_this<Backend> {
 
   auto& GetMtProvider() { return *mt_provider_; }
 
+  template<typename MtP>
+  void SetMtProvider(std::shared_ptr<MtP> mt_provider) {
+    mt_provider_ = mt_provider;
+  }
+
   auto& GetSpProvider() { return *sp_provider_; }
 
   auto& GetSbProvider() { return *sb_provider_; }
