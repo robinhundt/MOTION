@@ -63,8 +63,8 @@ encrypto::motion::RunTimeStatistics EvaluateProtocol(encrypto::motion::PartyPoin
   std::vector<encrypto::motion::BitVector<>> tmp_data(data_bytes * 8, encrypto::motion::BitVector<>(1));
   encrypto::motion::ShareWrapper key_input{party->In<encrypto::motion::MpcProtocol::kBooleanGmw>(tmp_key, 0)};
   encrypto::motion::ShareWrapper chaining_state{party->In<encrypto::motion::MpcProtocol::kBooleanGmw>(tmp_iv, 0)};
-  const auto kPathToAlgorithm{std::string(encrypto::motion::kRootDir) +
-                              "/circuits/advanced/aes_128.bristol"};
+  const auto kPathToAlgorithm{//std::string(encrypto::motion::kRootDir) +
+                              "../../circuits/advanced/aes_128.bristol"};
   const auto aes_algorithm{encrypto::motion::AlgorithmDescription::FromBristol(kPathToAlgorithm)};
   auto data_idx = 0;
   std::vector<encrypto::motion::ShareWrapper> block_results;

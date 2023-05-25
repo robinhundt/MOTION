@@ -39,8 +39,8 @@ encrypto::motion::RunTimeStatistics EvaluateProtocol(encrypto::motion::PartyPoin
       protocol == encrypto::motion::MpcProtocol::kBooleanGmw
           ? party->In<encrypto::motion::MpcProtocol::kBooleanGmw>(tmp, 0)
           : party->In<encrypto::motion::MpcProtocol::kBmr>(tmp, 0)};
-  const auto kAlgorithmPath{std::string(encrypto::motion::kRootDir) +
-                            "/circuits/advanced/sha_256.bristol"};
+  const auto kAlgorithmPath{//std::string(encrypto::motion::kRootDir) +
+                            "../../circuits/advanced/sha_256.bristol"};
   const auto sha_algorithm{
       encrypto::motion::AlgorithmDescription::FromBristolFashion(kAlgorithmPath)};
   const auto result{input.Evaluate(sha_algorithm)};

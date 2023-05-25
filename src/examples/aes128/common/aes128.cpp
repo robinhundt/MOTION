@@ -64,8 +64,8 @@ encrypto::motion::RunTimeStatistics EvaluateProtocol(encrypto::motion::PartyPoin
       protocol == encrypto::motion::MpcProtocol::kBooleanGmw
           ? party->In<encrypto::motion::MpcProtocol::kBooleanGmw>(tmp, 0)
           : party->In<encrypto::motion::MpcProtocol::kBmr>(tmp, 0)};
-  const auto kPathToAlgorithm{std::string(encrypto::motion::kRootDir) +
-                              "/circuits/advanced/aes_128.bristol"};
+  const auto kPathToAlgorithm{//std::string(encrypto::motion::kRootDir) +
+                              "../../circuits/advanced/aes_128.bristol"};
   const auto aes_algorithm{encrypto::motion::AlgorithmDescription::FromBristol(kPathToAlgorithm)};
   const auto result{input.Evaluate(aes_algorithm)};
   encrypto::motion::ShareWrapper output;
