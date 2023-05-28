@@ -36,6 +36,7 @@
 #include "common/sha256.h"
 #include "communication/communication_layer.h"
 #include "communication/tcp_transport.h"
+#include "multiplication_triple/mt_provider.h"
 #include "statistics/analysis.h"
 
 namespace program_options = boost::program_options;
@@ -79,9 +80,11 @@ int main(int ac, char* av[]) {
       accumulated_communication_statistics.Add(communication_statistics);
     }
 
-    std::cout << encrypto::motion::PrintStatistics(
-        fmt::format("SHA256 with {} SIMD values in {}", number_of_simd, protocol_string),
-        accumulated_statistics, accumulated_communication_statistics);
+//    std::cout << encrypto::motion::PrintStatistics(
+//        fmt::format("SHA256 with {} SIMD values in {}", number_of_simd, protocol_string),
+//        accumulated_statistics, accumulated_communication_statistics);
+      std::cout << accumulated_statistics.ToJson() << std::endl;
+      std::cout << accumulated_communication_statistics.ToJson() << std::endl;
 
   } catch (std::runtime_error& e) {
     std::cerr << e.what() << "\n";
@@ -126,7 +129,8 @@ std::pair<program_options::variables_map, bool> ParseProgramOptions(int ac, char
       ("num-simd", program_options::value<std::size_t>()->default_value(1), "number of SIMD values for SHA256 evaluation")
       ("protocol", program_options::value<std::string>()->default_value("BMR"), "Boolean MPC protocol (BMR or GMW)")
       ("online-after-setup", program_options::value<bool>()->default_value(true), "compute the online phase of the gate evaluations after the setup phase for all of them is completed (true/1 or false/0)")
-      ("repetitions", program_options::value<std::size_t>()->default_value(1), "number of repetitions");
+      ("repetitions", program_options::value<std::size_t>()->default_value(1), "number of repetitions")
+      ("insecure-setup", program_options::bool_switch()->default_value(false), "Use insecure MTs");
   // clang-format on
 
   program_options::variables_map user_options;
@@ -204,6 +208,9 @@ encrypto::motion::PartyPointer CreateParty(const program_options::variables_map&
   auto communication_layer = std::make_unique<encrypto::motion::communication::CommunicationLayer>(
       my_id, helper.SetupConnections());
   auto party = std::make_unique<encrypto::motion::Party>(std::move(communication_layer));
+  if (user_options["insecure-setup"].as<bool>()) {
+      party->GetBackend()->SetMtProvider(std::make_shared<encrypto::motion::InsecureMtProvider>(0, 2));
+  }
   auto configuration = party->GetConfiguration();
   // disable logging if the corresponding flag was set
   const auto logging{!user_options.count("disable-logging")};

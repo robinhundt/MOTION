@@ -53,7 +53,7 @@ int main(int ac, char* av[]) {
     // if help flag is set - print allowed command line arguments and exit
     if (help_flag) return EXIT_SUCCESS;
 
-    const auto data_bytes{user_options["data-bytes"].as<std::size_t>()};
+    const auto input_blocks{user_options["input-blocks"].as<std::size_t>()};
     const auto number_of_repetitions{user_options["repetitions"].as<std::size_t>()};
     encrypto::motion::MpcProtocol protocol;
     const std::string protocol_string{user_options["protocol"].as<std::string>()};
@@ -65,7 +65,7 @@ int main(int ac, char* av[]) {
       encrypto::motion::PartyPointer party{CreateParty(user_options)};
       // establish communication channels with other parties
 
-        auto statistics = EvaluateProtocol(party, data_bytes, check);
+        auto statistics = EvaluateProtocol(party, input_blocks * 16, check);
         accumulated_statistics.Add(statistics);
 
       auto communication_statistics =
@@ -74,7 +74,7 @@ int main(int ac, char* av[]) {
     }
 
 //    std::cout << encrypto::motion::PrintStatistics(
-//        fmt::format("AES128 with {} data bytes", data_bytes),
+//        fmt::format("AES128 with {} input blocks", input_blocks),
 //        accumulated_statistics, accumulated_communication_statistics);
     std::cout << accumulated_statistics.ToJson() << std::endl;
     std::cout << accumulated_communication_statistics.ToJson() << std::endl;
@@ -119,7 +119,7 @@ std::pair<program_options::variables_map, bool> ParseProgramOptions(int ac, char
       ("configuration-file,f", program_options::value<std::string>(), kConfigFileMessage.data())
       ("my-id", program_options::value<std::size_t>(), "my party id")
       ("parties", program_options::value<std::vector<std::string>>()->multitoken(), "info (id,IP,port) for each party e.g., --parties 0,127.0.0.1,23000 1,127.0.0.1,23001")
-      ("data-bytes", program_options::value<std::size_t>()->default_value(128), "number of data bytes for AES evaluation")
+      ("input-blocks", program_options::value<std::size_t>()->default_value(1), "number of input blocks (16 bytes) for AES-CBC evaluation")
       ("protocol", program_options::value<std::string>()->default_value("BMR"), "Boolean MPC protocol (BMR or GMW)")
       ("online-after-setup", program_options::value<bool>()->default_value(true), "compute the online phase of the gate evaluations after the setup phase for all of them is completed (true/1 or false/0)")
       ("repetitions", program_options::value<std::size_t>()->default_value(1), "number of repetitions")
