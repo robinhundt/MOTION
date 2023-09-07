@@ -67,8 +67,9 @@ encrypto::motion::RunTimeStatistics EvaluateProtocol(encrypto::motion::PartyPoin
                               "../../circuits/advanced/aes_128.bristol"};
   const auto aes_algorithm{encrypto::motion::AlgorithmDescription::FromBristol(kPathToAlgorithm)};
   auto data_idx = 0;
+  auto max_idx = data_bytes * 8;
   std::vector<encrypto::motion::ShareWrapper> block_results;
-  while (data_idx < data_bytes) {
+  while (data_idx < max_idx) {
     auto chunk = std::span(tmp_data.begin() + data_idx, 128);
     encrypto::motion::ShareWrapper chunk_input{party->In<encrypto::motion::MpcProtocol::kBooleanGmw>(chunk, 0)};
     auto tmp = chaining_state ^ chunk_input;
