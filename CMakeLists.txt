@@ -129,6 +129,7 @@ elseif (NOT Flatbuffers_FOUND AND NOT TARGET flatbuffers::flatbuffers)
     else()
         set(FLATBUFFERS_FLATC_EXECUTABLE "${PROJECT_BINARY_DIR}/bin/flatc")
     endif()
+    set(Flatbuffers_INCLUDE_DIRS, "${PROJECT_SOURCE_DIR}/extern/flatbuffers/include")
 endif ()
 add_subdirectory(fbs)
 

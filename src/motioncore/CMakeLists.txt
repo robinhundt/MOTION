@@ -204,7 +204,7 @@ target_include_directories(motion PUBLIC
         $<BUILD_INTERFACE:${MOTION_ROOT_DIR}/src/motioncore>
         $<BUILD_INTERFACE:${MOTION_ROOT_DIR}/extern>
         $<BUILD_INTERFACE:${MOTION_ROOT_DIR}/extern/fmt/include>
-        $<BUILD_INTERFACE:${MOTION_ROOT_DIR}/extern/flatbuffers/include>
+        $<BUILD_INTERFACE:${Flatbuffers_INCLUDE_DIRS}>
         $<BUILD_INTERFACE:${Boost_INCLUDE_DIRS}>
         )
 
